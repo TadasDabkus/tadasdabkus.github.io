@@ -31,3 +31,7 @@ The hero uses Three.js from jsDelivr CDN. Visitors can drag with a mouse or touc
 
 ## Troubleshooting
 The interactive hero uses a single Three.js ES module and custom pointer controls (no OrbitControls dependency). It requires WebGL and an internet connection to load Three.js from jsDelivr. If it does not appear, check the browser console for a CDN or WebGL error.
+
+
+## Geometric 3D hero
+The interactive hero is a faceted geometric sculpture with fine wireframe cages and restrained lime/orange accents. Drag with mouse or touch to rotate it. Three.js is loaded from jsDelivr, so an internet connection is required.
