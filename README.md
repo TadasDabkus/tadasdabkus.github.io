@@ -45,3 +45,9 @@ Mobile Chrome follow-up: the canvas now handles both Pointer Events and explicit
 
 ## iPhone decorative punctuation fix
 The hero star and lime terminal dot are now wrapped in an isolated inline-flex container with explicit Safari text-fill colors and spacing. This is intended to prevent iOS Safari glyph/color overlap while preserving the existing design.
+
+
+## Safari icon compatibility
+Decorative icon glyphs (starbursts, arrows, target and command symbol) are now inline SVG vectors instead of Unicode characters. This avoids iOS Safari font fallback and emoji/text-presentation differences while preserving the existing colors and layout.
+
+The lime punctuation block at the end of the hero heading and the remaining text-link arrow are also SVG now, so the visible decorative symbols no longer depend on iOS font glyph rendering.
