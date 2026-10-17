@@ -145,3 +145,57 @@ dialog?.addEventListener("click", event => {
     initLoader();
   }
 })();
+
+
+// Accessible contact form dialog and asynchronous form submission.
+(() => {
+  const dialog = document.getElementById('contact-form-dialog');
+  const openButton = document.getElementById('open-contact-form');
+  const closeButton = document.getElementById('close-contact-form');
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('contact-form-status');
+  if (!dialog || !openButton || !closeButton || !form || !status) return;
+
+  openButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else window.location.hash = 'contact-form-dialog';
+  });
+  closeButton.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && dialog.open) dialog.close();
+  });
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    if (form.elements['_honey'].value) return;
+    const submit = form.querySelector('button[type="submit"]');
+    const original = submit.innerHTML;
+    submit.disabled = true;
+    submit.textContent = 'Sending…';
+    status.textContent = '';
+    status.classList.remove('is-error');
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.success === 'false' || result.success === false) {
+        throw new Error(result.message || 'The message could not be sent. Please email me directly.');
+      }
+      status.textContent = 'Thanks — your message has been sent. I’ll get back to you soon.';
+      form.reset();
+    } catch (error) {
+      status.textContent = 'Could not send right now. Please email tadas.dabkus@gmail.com instead.';
+      status.classList.add('is-error');
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML = original;
+    }
+  });
+})();
