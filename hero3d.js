@@ -110,39 +110,62 @@ if (host) {
     let velocityX = 0;
     let velocityY = 0;
 
-    const onPointerDown = (event) => {
+    const startDrag = (x, y) => {
       dragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      // Capture on the canvas itself so touch/pointer events remain attached
-      // while the finger moves across the object.
-      renderer.domElement.setPointerCapture?.(event.pointerId);
+      lastX = x;
+      lastY = y;
       renderer.domElement.classList.add("is-dragging");
     };
-    const onPointerMove = (event) => {
+    const moveDrag = (x, y) => {
       if (!dragging) return;
-      const dx = event.clientX - lastX;
-      const dy = event.clientY - lastY;
-      sculpture.rotation.y += dx * 0.010;
-      sculpture.rotation.x += dy * 0.010;
-      velocityY = dx * 0.00075;
-      velocityX = dy * 0.00075;
-      lastX = event.clientX;
-      lastY = event.clientY;
+      const dx = x - lastX;
+      const dy = y - lastY;
+      sculpture.rotation.y += dx * 0.012;
+      sculpture.rotation.x += dy * 0.012;
+      velocityY = dx * 0.0008;
+      velocityX = dy * 0.0008;
+      lastX = x;
+      lastY = y;
     };
-    const onPointerUp = () => {
+    const stopDrag = () => {
       dragging = false;
       renderer.domElement.classList.remove("is-dragging");
     };
+
+    // Pointer events for mouse and modern touch browsers.
     renderer.domElement.style.touchAction = "none";
     renderer.domElement.style.pointerEvents = "auto";
     renderer.domElement.style.userSelect = "none";
     renderer.domElement.style.webkitUserSelect = "none";
-    renderer.domElement.addEventListener("pointerdown", onPointerDown, { passive: true });
-    renderer.domElement.addEventListener("pointermove", onPointerMove, { passive: true });
-    renderer.domElement.addEventListener("pointerup", onPointerUp, { passive: true });
-    renderer.domElement.addEventListener("pointercancel", onPointerUp, { passive: true });
-    renderer.domElement.addEventListener("lostpointercapture", onPointerUp, { passive: true });
+    renderer.domElement.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      startDrag(event.clientX, event.clientY);
+      try { renderer.domElement.setPointerCapture(event.pointerId); } catch (_) {}
+    });
+    renderer.domElement.addEventListener("pointermove", (event) => {
+      if (!dragging) return;
+      event.preventDefault();
+      moveDrag(event.clientX, event.clientY);
+    });
+    renderer.domElement.addEventListener("pointerup", stopDrag);
+    renderer.domElement.addEventListener("pointercancel", stopDrag);
+    renderer.domElement.addEventListener("lostpointercapture", stopDrag);
+
+    // Explicit touch listeners as a fallback for mobile Chrome/WebView.
+    renderer.domElement.addEventListener("touchstart", (event) => {
+      if (!event.changedTouches.length) return;
+      event.preventDefault();
+      const touch = event.changedTouches[0];
+      startDrag(touch.clientX, touch.clientY);
+    }, { passive: false });
+    renderer.domElement.addEventListener("touchmove", (event) => {
+      if (!dragging || !event.changedTouches.length) return;
+      event.preventDefault();
+      const touch = event.changedTouches[0];
+      moveDrag(touch.clientX, touch.clientY);
+    }, { passive: false });
+    renderer.domElement.addEventListener("touchend", stopDrag, { passive: true });
+    renderer.domElement.addEventListener("touchcancel", stopDrag, { passive: true });
 
     const resizeObserver = new ResizeObserver(() => {
       const width = Math.max(host.clientWidth, 1);

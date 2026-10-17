@@ -38,3 +38,6 @@ The interactive hero is a faceted geometric sculpture with fine wireframe cages 
 
 
 Mobile touch fix: pointer capture is now applied to the actual canvas, with touch-action disabled on the canvas/container so dragging the 3D object works on touch screens. The artwork is also given slightly more prominence on desktop.
+
+
+Mobile Chrome follow-up: the canvas now handles both Pointer Events and explicit Touch Events with passive:false and preventDefault(), and the module URL has a cache-busting version query. Replace the updated index.html, style.css and hero3d.js on GitHub.

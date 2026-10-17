@@ -306,3 +306,15 @@ button { font: inherit; }
   .hero-3d, .hero-3d canvas { touch-action: none !important; }
   .hero-visual-hint { bottom: 14px; right: 14px; }
 }
+
+
+/* Mobile Chrome touch-drag reliability */
+.hero-visual,
+.hero-3d,
+.hero-3d canvas {
+  touch-action: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.hero-3d { pointer-events: auto; }
+.hero-3d canvas { display: block; pointer-events: auto; }
+.hero-3d canvas.is-dragging { cursor: grabbing; }
