@@ -51,3 +51,5 @@ The hero star and lime terminal dot are now wrapped in an isolated inline-flex c
 Decorative icon glyphs (starbursts, arrows, target and command symbol) are now inline SVG vectors instead of Unicode characters. This avoids iOS Safari font fallback and emoji/text-presentation differences while preserving the existing colors and layout.
 
 The lime punctuation block at the end of the hero heading and the remaining text-link arrow are also SVG now, so the visible decorative symbols no longer depend on iOS font glyph rendering.
+
+The hero starburst is now built from overlapping square-ended SVG bars rather than a sharp-pointed star polygon, giving it a bolder, squarer appearance closer to the original design.
