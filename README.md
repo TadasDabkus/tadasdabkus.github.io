@@ -35,3 +35,6 @@ The interactive hero uses a single Three.js ES module and custom pointer control
 
 ## Geometric 3D hero
 The interactive hero is a faceted geometric sculpture with fine wireframe cages and restrained lime/orange accents. Drag with mouse or touch to rotate it. Three.js is loaded from jsDelivr, so an internet connection is required.
+
+
+Mobile touch fix: pointer capture is now applied to the actual canvas, with touch-action disabled on the canvas/container so dragging the 3D object works on touch screens. The artwork is also given slightly more prominence on desktop.

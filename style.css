@@ -292,3 +292,17 @@ button { font: inherit; }
   display: block; margin-top: 10px; color: var(--muted);
   font: 9px var(--mono); letter-spacing: .1em;
 }
+
+
+/* Final hero polish: make the artwork more prominent and clearly draggable */
+@media (min-width: 1001px) {
+  .hero-visual { left: 52%; right: 8.5vw; }
+  .hero-3d canvas { touch-action: none; cursor: grab; }
+  .hero-3d canvas.is-dragging { cursor: grabbing; }
+}
+.hero-visual-hint { letter-spacing: .12em; }
+@media (max-width: 760px) {
+  .hero-visual { touch-action: none; }
+  .hero-3d, .hero-3d canvas { touch-action: none !important; }
+  .hero-visual-hint { bottom: 14px; right: 14px; }
+}

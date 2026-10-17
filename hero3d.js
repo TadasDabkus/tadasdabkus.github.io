@@ -114,26 +114,35 @@ if (host) {
       dragging = true;
       lastX = event.clientX;
       lastY = event.clientY;
-      host.setPointerCapture?.(event.pointerId);
+      // Capture on the canvas itself so touch/pointer events remain attached
+      // while the finger moves across the object.
+      renderer.domElement.setPointerCapture?.(event.pointerId);
+      renderer.domElement.classList.add("is-dragging");
     };
     const onPointerMove = (event) => {
       if (!dragging) return;
       const dx = event.clientX - lastX;
       const dy = event.clientY - lastY;
-      sculpture.rotation.y += dx * 0.008;
-      sculpture.rotation.x += dy * 0.008;
-      velocityY = dx * 0.00065;
-      velocityX = dy * 0.00065;
+      sculpture.rotation.y += dx * 0.010;
+      sculpture.rotation.x += dy * 0.010;
+      velocityY = dx * 0.00075;
+      velocityX = dy * 0.00075;
       lastX = event.clientX;
       lastY = event.clientY;
     };
-    const onPointerUp = () => { dragging = false; };
+    const onPointerUp = () => {
+      dragging = false;
+      renderer.domElement.classList.remove("is-dragging");
+    };
     renderer.domElement.style.touchAction = "none";
-    renderer.domElement.addEventListener("pointerdown", onPointerDown);
-    renderer.domElement.addEventListener("pointermove", onPointerMove);
-    renderer.domElement.addEventListener("pointerup", onPointerUp);
-    renderer.domElement.addEventListener("pointercancel", onPointerUp);
-    renderer.domElement.addEventListener("lostpointercapture", onPointerUp);
+    renderer.domElement.style.pointerEvents = "auto";
+    renderer.domElement.style.userSelect = "none";
+    renderer.domElement.style.webkitUserSelect = "none";
+    renderer.domElement.addEventListener("pointerdown", onPointerDown, { passive: true });
+    renderer.domElement.addEventListener("pointermove", onPointerMove, { passive: true });
+    renderer.domElement.addEventListener("pointerup", onPointerUp, { passive: true });
+    renderer.domElement.addEventListener("pointercancel", onPointerUp, { passive: true });
+    renderer.domElement.addEventListener("lostpointercapture", onPointerUp, { passive: true });
 
     const resizeObserver = new ResizeObserver(() => {
       const width = Math.max(host.clientWidth, 1);
