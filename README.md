@@ -1,9 +1,10 @@
-# Your Name — Creative Portfolio Starter
+# Tadas Dabkus — Creative Portfolio
 
 ## Files
 - `index.html` — page structure and copy
 - `style.css` — responsive experimental visual style
 - `script.js` — mobile navigation, scroll reveals and project detail dialogs
+- `hero3d.js` — interactive Three.js object in the hero section
 
 ## Before publishing
 1. Replace the placeholder project artwork in the portfolio with your actual images/screenshots.
@@ -23,3 +24,6 @@ The visual artwork in the first version is made with CSS shapes and is intended 
 6. Wait a few minutes and visit `https://YOUR-USERNAME.github.io`.
 
 No custom domain is required. GitHub Pages provides the free GitHub subdomain and HTTPS.
+
+## Interactive 3D hero
+The hero uses Three.js from jsDelivr CDN. Visitors can drag with a mouse or touch to rotate the abstract object. An internet connection is required to load Three.js. The scene uses lightweight procedural geometry rather than an external model file.
