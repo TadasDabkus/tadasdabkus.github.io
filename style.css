@@ -318,3 +318,49 @@ button { font: inherit; }
 .hero-3d { pointer-events: auto; }
 .hero-3d canvas { display: block; pointer-events: auto; }
 .hero-3d canvas.is-dragging { cursor: grabbing; }
+
+
+/* iOS Safari fix: isolate the decorative star and green terminal dot */
+.hero-punctuation {
+  display: inline-flex;
+  align-items: flex-start;
+  vertical-align: top;
+  position: relative;
+  isolation: isolate;
+  white-space: nowrap;
+  letter-spacing: 0;
+  margin-left: .08em;
+  line-height: 1;
+}
+.hero-punctuation .asterisk {
+  color: #ff6845;
+  -webkit-text-fill-color: #ff6845;
+  fill: #ff6845;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  margin: .03em .02em 0 0;
+  line-height: 1;
+  letter-spacing: 0;
+  mix-blend-mode: normal;
+  animation: spin 18s linear infinite;
+}
+.hero-punctuation .period {
+  color: #d5ff3f;
+  -webkit-text-fill-color: #d5ff3f;
+  display: inline-block;
+  line-height: .65;
+  position: relative;
+  margin-left: .02em;
+  letter-spacing: 0;
+}
+@supports (-webkit-touch-callout: none) {
+  .hero-punctuation .asterisk {
+    color: #ff6845 !important;
+    -webkit-text-fill-color: #ff6845 !important;
+  }
+  .hero-punctuation .period {
+    color: #d5ff3f !important;
+    -webkit-text-fill-color: #d5ff3f !important;
+  }
+}

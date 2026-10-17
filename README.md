@@ -41,3 +41,7 @@ Mobile touch fix: pointer capture is now applied to the actual canvas, with touc
 
 
 Mobile Chrome follow-up: the canvas now handles both Pointer Events and explicit Touch Events with passive:false and preventDefault(), and the module URL has a cache-busting version query. Replace the updated index.html, style.css and hero3d.js on GitHub.
+
+
+## iPhone decorative punctuation fix
+The hero star and lime terminal dot are now wrapped in an isolated inline-flex container with explicit Safari text-fill colors and spacing. This is intended to prevent iOS Safari glyph/color overlap while preserving the existing design.
