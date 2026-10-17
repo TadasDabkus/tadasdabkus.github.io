@@ -485,3 +485,17 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .site-loader, .loader-dot, .loader-track span { animation: none !important; transition-duration: .01ms !important; }
 }
+
+
+/* Ensure the branded loader sits above all page layers at initial paint */
+#site-loader.site-loader {
+  display: flex !important;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+#site-loader.site-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}

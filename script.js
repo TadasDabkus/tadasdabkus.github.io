@@ -81,67 +81,67 @@ dialog?.addEventListener("click", event => {
 });
 
 
-// Branded loader: wait for page assets and the 3D canvas to initialize, with a safety timeout.
+
+// Branded loader: wait briefly for the page and 3D hero, then reveal the portfolio.
 (() => {
-  const loader = document.getElementById("site-loader");
-  if (!loader) return;
+  const initLoader = () => {
+    const loader = document.getElementById("site-loader");
+    if (!loader || loader.dataset.initialized === "true") return;
+    loader.dataset.initialized = "true";
 
-  const progressBar = document.getElementById("loader-progress");
-  const percentLabel = document.getElementById("loader-percent");
-  let progress = 0;
-  let finished = false;
-  const startedAt = Date.now();
-  const minDisplayMs = 650;
-  const maxWaitMs = 4500;
+    const progressBar = document.getElementById("loader-progress");
+    const percentLabel = document.getElementById("loader-percent");
+    const startedAt = Date.now();
+    let progress = 0;
+    let done = false;
 
-  const setProgress = (value) => {
-    progress = Math.max(progress, Math.min(100, value));
-    if (progressBar) progressBar.style.width = `${progress}%`;
-    if (percentLabel) percentLabel.textContent = `${String(Math.round(progress)).padStart(2, "0")}%`;
-  };
+    const update = (n) => {
+      progress = Math.max(progress, Math.min(100, n));
+      if (progressBar) progressBar.style.width = progress + "%";
+      if (percentLabel) percentLabel.textContent = String(Math.round(progress)).padStart(2, "0") + "%";
+    };
 
-  const finish = () => {
-    if (finished) return;
-    finished = true;
-    setProgress(100);
-    const delay = Math.max(0, minDisplayMs - (Date.now() - startedAt));
-    window.setTimeout(() => {
-      loader.classList.add("is-hidden");
-      document.body.classList.add("site-loaded");
-      window.setTimeout(() => loader.remove(), 550);
-    }, delay);
-  };
+    const reveal = () => {
+      if (done) return;
+      done = true;
+      update(100);
+      const minTimeLeft = Math.max(0, 900 - (Date.now() - startedAt));
+      window.setTimeout(() => {
+        loader.classList.add("is-hidden");
+        window.setTimeout(() => loader.remove(), 600);
+      }, minTimeLeft);
+    };
 
-  // Smooth visual progress; it is a presentation indicator, not a byte-accurate download meter.
-  const progressTimer = window.setInterval(() => {
-    if (finished) {
-      window.clearInterval(progressTimer);
-      return;
+    const timer = window.setInterval(() => {
+      if (done) {
+        window.clearInterval(timer);
+        return;
+      }
+      update(progress < 65 ? progress + 8 : progress < 90 ? progress + 3 : progress + 1);
+    }, 85);
+
+    const tryReveal = () => {
+      if (document.readyState === "complete") {
+        // Give Three.js up to 1.8 seconds to add its canvas, but don't block the page if unavailable.
+        const elapsed = Date.now() - startedAt;
+        if (document.querySelector("#hero-3d canvas") || elapsed > 1800) reveal();
+      }
+    };
+
+    if (document.readyState === "complete") tryReveal();
+    window.addEventListener("load", tryReveal, { once: true });
+    const hero = document.getElementById("hero-3d");
+    if (hero) {
+      const observer = new MutationObserver(tryReveal);
+      observer.observe(hero, { childList: true, subtree: true });
+      window.setTimeout(() => observer.disconnect(), 3000);
     }
-    const next = progress < 60 ? progress + 9 : progress < 85 ? progress + 3 : progress + 1;
-    setProgress(Math.min(next, 94));
-  }, 90);
-
-  const checkReady = () => {
-    const canvas = document.querySelector("#hero-3d canvas");
-    // If WebGL is unsupported or the CDN is unavailable, don't block the rest of the site.
-    const has3d = Boolean(canvas);
-    const pageReady = document.readyState === "complete";
-    if (pageReady && (has3d || Date.now() - startedAt > 1800)) finish();
+    window.setTimeout(reveal, 4500);
   };
 
-  if (document.readyState === "complete") {
-    checkReady();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLoader, { once: true });
   } else {
-    window.addEventListener("load", checkReady, { once: true });
+    initLoader();
   }
-
-  const observer = new MutationObserver(() => checkReady());
-  const hero = document.getElementById("hero-3d");
-  if (hero) observer.observe(hero, { childList: true, subtree: true });
-
-  window.setTimeout(() => {
-    observer.disconnect();
-    finish();
-  }, maxWaitMs);
 })();

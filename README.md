@@ -57,3 +57,6 @@ The hero starburst is now built from overlapping square-ended SVG bars rather th
 
 ## Branded loading screen
 A short branded loading overlay shows the TADAS DABKUS wordmark, a lime progress bar and a percentage. It waits for the page load and the Three.js canvas when possible, but always dismisses after a short safety timeout so slow connections or unsupported WebGL do not trap visitors.
+
+
+Loader fix: added the missing loader HTML directly after `<body>` and made initialization wait for DOMContentLoaded. The loader should now be visible on first paint and disappear after page/3D readiness or a safety timeout.
