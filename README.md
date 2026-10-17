@@ -60,3 +60,6 @@ A short branded loading overlay shows the TADAS DABKUS wordmark, a lime progress
 
 
 Loader fix: added the missing loader HTML directly after `<body>` and made initialization wait for DOMContentLoaded. The loader should now be visible on first paint and disappear after page/3D readiness or a safety timeout.
+
+
+Loader timing update: the loader remains visible for at least 2.4 seconds, allows the 3D canvas up to about 2.6 seconds to initialize, and has a 6.5-second safety timeout for slow connections.

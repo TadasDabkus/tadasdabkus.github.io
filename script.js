@@ -105,7 +105,7 @@ dialog?.addEventListener("click", event => {
       if (done) return;
       done = true;
       update(100);
-      const minTimeLeft = Math.max(0, 900 - (Date.now() - startedAt));
+      const minTimeLeft = Math.max(0, 2400 - (Date.now() - startedAt));
       window.setTimeout(() => {
         loader.classList.add("is-hidden");
         window.setTimeout(() => loader.remove(), 600);
@@ -124,7 +124,7 @@ dialog?.addEventListener("click", event => {
       if (document.readyState === "complete") {
         // Give Three.js up to 1.8 seconds to add its canvas, but don't block the page if unavailable.
         const elapsed = Date.now() - startedAt;
-        if (document.querySelector("#hero-3d canvas") || elapsed > 1800) reveal();
+        if (document.querySelector("#hero-3d canvas") || elapsed > 2600) reveal();
       }
     };
 
@@ -136,7 +136,7 @@ dialog?.addEventListener("click", event => {
       observer.observe(hero, { childList: true, subtree: true });
       window.setTimeout(() => observer.disconnect(), 3000);
     }
-    window.setTimeout(reveal, 4500);
+    window.setTimeout(reveal, 6500);
   };
 
   if (document.readyState === "loading") {
