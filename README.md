@@ -53,3 +53,7 @@ Decorative icon glyphs (starbursts, arrows, target and command symbol) are now i
 The lime punctuation block at the end of the hero heading and the remaining text-link arrow are also SVG now, so the visible decorative symbols no longer depend on iOS font glyph rendering.
 
 The hero starburst is now built from overlapping square-ended SVG bars rather than a sharp-pointed star polygon, giving it a bolder, squarer appearance closer to the original design.
+
+
+## Branded loading screen
+A short branded loading overlay shows the TADAS DABKUS wordmark, a lime progress bar and a percentage. It waits for the page load and the Three.js canvas when possible, but always dismisses after a short safety timeout so slow connections or unsupported WebGL do not trap visitors.
