@@ -27,3 +27,7 @@ No custom domain is required. GitHub Pages provides the free GitHub subdomain an
 
 ## Interactive 3D hero
 The hero uses Three.js from jsDelivr CDN. Visitors can drag with a mouse or touch to rotate the abstract object. An internet connection is required to load Three.js. The scene uses lightweight procedural geometry rather than an external model file.
+
+
+## Troubleshooting
+The interactive hero uses a single Three.js ES module and custom pointer controls (no OrbitControls dependency). It requires WebGL and an internet connection to load Three.js from jsDelivr. If it does not appear, check the browser console for a CDN or WebGL error.

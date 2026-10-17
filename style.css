@@ -190,11 +190,12 @@ button { font: inherit; }
 .hero-visual {
   position: absolute;
   z-index: 1;
-  right: 5.2vw;
-  top: 17%;
-  width: min(43%, 760px);
-  height: 65%;
-  min-height: 380px;
+  left: 51.5%;
+  right: 4.5vw;
+  top: 15%;
+  width: auto;
+  height: 68%;
+  min-height: 400px;
   overflow: hidden;
   border: 1px solid rgba(241,239,233,.08);
   background:
@@ -244,7 +245,7 @@ button { font: inherit; }
 @media (max-width: 1000px) {
   .hero-heading-wrap { max-width: 65%; }
   .hero h1 { font-size: clamp(68px, 9vw, 112px); }
-  .hero-visual { right: 4vw; width: 43%; height: 54%; top: 22%; min-height: 300px; }
+  .hero-visual { left: 51%; right: 4vw; width: auto; height: 56%; top: 21%; min-height: 300px; }
   .hero-stamp { right: 6%; top: 13%; }
 }
 @media (max-width: 760px) {
@@ -254,6 +255,7 @@ button { font: inherit; }
   .hero-visual {
     position: relative;
     top: auto;
+    left: auto;
     right: auto;
     width: 100%;
     height: min(88vw, 390px);
@@ -268,4 +270,25 @@ button { font: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-3d { cursor: default; }
+}
+
+
+/* Layout refinement: bring the interactive artwork inward */
+@media (min-width: 1001px) {
+  .hero-heading-wrap { max-width: 56%; }
+  .hero-visual { left: 50.5%; right: 5.2vw; }
+  .hero h1 { font-size: clamp(72px, 8.2vw, 142px); }
+}
+@media (min-width: 761px) and (max-width: 1000px) {
+  .hero-visual { left: 52%; right: 4vw; }
+}
+
+.hero-3d-fallback {
+  position: absolute; inset: 0; display: grid; place-content: center;
+  text-align: center; color: var(--acid); font: 700 22px var(--display);
+  letter-spacing: -.04em;
+}
+.hero-3d-fallback span {
+  display: block; margin-top: 10px; color: var(--muted);
+  font: 9px var(--mono); letter-spacing: .1em;
 }
