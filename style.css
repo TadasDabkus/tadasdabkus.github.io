@@ -678,7 +678,7 @@ button {
 }
 
 .project:hover .project-arrow {
-  transform: translate(3px,-3px);
+  transform: translate(3px, -3px);
 }
 
 .portfolio-note {
@@ -891,6 +891,7 @@ button {
 
 /* =========================================================
    PROJECT POPUP
+   Tik šio lango plotis padidintas.
    ========================================================= */
 
 .project-dialog {
@@ -898,15 +899,10 @@ button {
   background: #1a1a1a;
   border: 1px solid var(--line);
 
-  /* PADIDINTAS VLTN / PROJECT POPUP */
-  width: min(900px, calc(100% - 48px));
-  max-width: 900px;
-  max-height: 90vh;
+  /* buvo 560px — dabar tik popup yra platesnis */
+  width: min(900px, calc(100% - 32px));
 
-  padding: 48px;
-
-  overflow-y: auto;
-  overflow-x: hidden;
+  padding: 42px;
 }
 
 .project-dialog::backdrop {
@@ -1143,11 +1139,7 @@ button {
     font-size: 8px;
   }
 
-  /* VLTN popup mobile */
   .project-dialog {
-    width: calc(100% - 24px);
-    max-width: none;
-    max-height: 90vh;
     padding: 35px 24px 24px;
   }
 }
@@ -1200,7 +1192,6 @@ button {
   min-height: 400px;
   overflow: hidden;
   border: 1px solid rgba(241,239,233,.08);
-
   background:
     radial-gradient(
       ellipse at 50% 48%,
@@ -1212,7 +1203,6 @@ button {
       rgba(255,104,69,.06),
       transparent 66%
     );
-
   isolation: isolate;
 }
 
