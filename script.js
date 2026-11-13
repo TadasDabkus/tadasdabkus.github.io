@@ -1,300 +1,222 @@
 /* =========================================================
-   TADZAKI / LAB — PORTFOLIO SCRIPT
-   ========================================================= */
+   NAVIGATION
+========================================================= */
 
-
-/* =========================================================
-   BRANDED PAGE LOADER
-   ========================================================= */
-
-(function initSiteLoader() {
-
-    const loader = document.getElementById("site-loader");
-    const percent = document.getElementById("loader-percent");
-    const progress = document.getElementById("loader-progress");
-
-    // Jeigu loaderio HTML nėra — nieko nedarome
-    if (!loader) return;
-
-    let currentProgress = 0;
-    let finished = false;
-
-
-    function updateLoader(value) {
-
-        currentProgress = Math.min(100, Math.max(0, value));
-
-        if (percent) {
-            percent.textContent =
-                `${String(Math.round(currentProgress)).padStart(2, "0")}%`;
-        }
-
-        if (progress) {
-            progress.style.width = `${currentProgress}%`;
-        }
-    }
-
-
-    function finishLoader() {
-
-        if (finished) return;
-
-        finished = true;
-
-        updateLoader(100);
-
-        setTimeout(() => {
-
-            loader.classList.add("is-hidden");
-
-            setTimeout(() => {
-
-                if (loader && loader.parentNode) {
-                    loader.remove();
-                }
-
-            }, 600);
-
-        }, 250);
-    }
-
-
-    // Pradinė būsena
-    updateLoader(0);
-
-
-    // Lengva progreso animacija
-    setTimeout(() => updateLoader(20), 100);
-    setTimeout(() => updateLoader(40), 250);
-    setTimeout(() => updateLoader(65), 450);
-    setTimeout(() => updateLoader(80), 650);
-
-
-    // Kai visas puslapis užsikrovė
-    if (document.readyState === "complete") {
-
-        setTimeout(finishLoader, 300);
-
-    } else {
-
-        window.addEventListener(
-            "load",
-            () => {
-                setTimeout(finishLoader, 300);
-            },
-            { once: true }
-        );
-
-    }
-
-
-    // Saugiklis — loaderis niekada negali likti amžinai
-    setTimeout(() => {
-        finishLoader();
-    }, 3000);
-
-})();
-
-
-
-/* =========================================================
-   MOBILE NAVIGATION
-   ========================================================= */
-
+const nav = document.querySelector(".desktop-nav");
 const menuToggle = document.querySelector(".menu-toggle");
-const desktopNav = document.querySelector(".desktop-nav");
 
+menuToggle?.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("open");
 
-if (menuToggle && desktopNav) {
+  menuToggle.setAttribute(
+    "aria-expanded",
+    String(isOpen)
+  );
+});
 
-    menuToggle.addEventListener("click", () => {
+nav?.querySelectorAll("a").forEach(link => {
 
-        const isOpen =
-            desktopNav.classList.toggle("open");
+  link.addEventListener("click", () => {
 
-        menuToggle.setAttribute(
-            "aria-expanded",
-            String(isOpen)
-        );
+    nav.classList.remove("open");
 
-    });
+    menuToggle?.setAttribute(
+      "aria-expanded",
+      "false"
+    );
 
+  });
 
-    desktopNav.querySelectorAll("a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            desktopNav.classList.remove("open");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        });
-
-    });
-
-}
+});
 
 
 
 /* =========================================================
-   CURRENT YEAR
-   ========================================================= */
+   YEAR
+========================================================= */
 
 const yearElement = document.querySelector("#year");
 
 if (yearElement) {
-
-    yearElement.textContent =
-        new Date().getFullYear();
-
+  yearElement.textContent = new Date().getFullYear();
 }
 
 
 
 /* =========================================================
-   SCROLL REVEAL
-   ========================================================= */
+   SCROLL REVEALS
+========================================================= */
 
-const revealElements =
-    document.querySelectorAll(".reveal");
+const revealObserver = new IntersectionObserver(
+  (entries, observer) => {
 
+    entries.forEach(entry => {
 
-if ("IntersectionObserver" in window) {
+      if (entry.isIntersecting) {
 
-    const revealObserver =
-        new IntersectionObserver(
-            (entries, observer) => {
+        entry.target.classList.add("is-visible");
 
-                entries.forEach(entry => {
+        observer.unobserve(entry.target);
 
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add(
-                            "is-visible"
-                        );
-
-                        observer.unobserve(
-                            entry.target
-                        );
-
-                    }
-
-                });
-
-            },
-            {
-                threshold: 0.12
-            }
-        );
-
-
-    revealElements.forEach((element, index) => {
-
-        // Nedidelis stagger efektas
-        const delay =
-            Math.min(index % 4, 3) * 80;
-
-        element.style.transitionDelay =
-            `${delay}ms`;
-
-        revealObserver.observe(element);
+      }
 
     });
 
-} else {
+  },
+  {
+    threshold: 0.12
+  }
+);
 
-    // Fallback senesnėms naršyklėms
-    revealElements.forEach(element => {
 
-        element.classList.add(
-            "is-visible"
-        );
+document.querySelectorAll(".reveal").forEach(
+  (element, index) => {
 
-    });
+    element.style.transitionDelay =
+      `${Math.min(index % 4, 3) * 80}ms`;
 
-}
+    revealObserver.observe(element);
+
+  }
+);
 
 
 
 /* =========================================================
-   PROJECT CONTENT
-   ========================================================= */
+   PROJECT DATA
+========================================================= */
 
 const projectContent = {
 
-    autumn: {
+  autumn: {
 
-        kicker: "01 / REAL-TIME 3D",
+    kicker: "01 / CREATIVE TECHNOLOGY",
 
-        title: "Autumn worlds",
+    title: "Autumn worlds",
 
-        description:
-            "An experimental real-time 3D environment exploring atmosphere, materials, lighting and interaction through a stylised autumn scene.",
+    description:
+      "An exploration of atmosphere and material in a real-time 3D environment. The project focuses on an autumn setting, environment lighting, surface textures and the relationship between detail and mood.",
 
-        role:
-            "ROLE: 3D SCENE / DEVELOPMENT",
+    role:
+      "ROLE: 3D SCENE / DEVELOPMENT",
 
-        tools:
-            "TOOLS: THREE.JS / WEBGPU / BLENDER"
+    tools:
+      "TOOLS: THREE.JS / WEBGPU",
+
+    gallery: [],
+
+    reminder:
+      "A real-time 3D environment exploring atmosphere, materials and interactive presentation."
+
+  },
+
+
+  /* =====================================================
+     VLTN
+  ===================================================== */
+
+  vltn: {
+
+    kicker: "02 / BRAND & DIGITAL",
+
+    title: "VLTN",
+
+    description:
+      "A fictional performance brand identity and digital experience concept. The project combines visual identity, art direction, product presentation and a responsive website built around a premium performance aesthetic.",
+
+    role:
+      "ROLE: BRAND IDENTITY / ART DIRECTION",
+
+    tools:
+      "TOOLS: FIGMA / PHOTOSHOP / HTML / CSS / JS",
+
+    gallery: [
+
+      {
+        src: "vltn/vltn-board-01.jpg",
+        alt: "VLTN brand identity board 01"
+      },
+
+      {
+        src: "vltn/vltn-board-02.jpg",
+        alt: "VLTN brand identity board 02"
+      },
+
+      {
+        src: "vltn/vltn-board-03.jpg",
+        alt: "VLTN brand identity board 03"
+      }
+
+    ],
+
+    website: {
+
+      image: "vltn/vltn-website.jpg",
+
+      title: "VISIT THE VLTN WEBSITE",
+
+      url: "https://tadasdabkus.github.io/vltn-performance/"
 
     },
 
+    reminder:
+      "The project explores how a fictional performance brand can move from identity and visual direction into a complete digital experience."
 
-    noru: {
-
-        kicker: "02 / BRAND & DIGITAL",
-
-        title: "Norų Ūkis",
-
-        description:
-            "A visual and digital concept created for a hazelnut farm, combining web design, visual communication and content direction.",
-
-        role:
-            "ROLE: DESIGN / WEB",
-
-        tools:
-            "TOOLS: FIGMA / FRAMER / PHOTOSHOP"
-
-    },
+  },
 
 
-    beach: {
+  /* =====================================================
+     BEACH
+  ===================================================== */
 
-        kicker: "03 / REAL-TIME 3D",
+  beach: {
 
-        title: "Somewhere in summer",
+    kicker: "03 / 3D ENVIRONMENT",
 
-        description:
-            "A stylised interactive beach environment created with 3D assets, lighting, textures, animation and sound.",
+    title: "Somewhere in summer",
 
-        role:
-            "ROLE: 3D / DEVELOPMENT",
+    description:
+      "A stylised beach environment created to explore scene composition, lighting, imported 3D assets and sound.",
 
-        tools:
-            "TOOLS: THREE.JS / WEBGPU / GLTF"
+    role:
+      "ROLE: SCENE DESIGN / CODE",
 
-    },
+    tools:
+      "TOOLS: THREE.JS / GLTF",
+
+    gallery: [],
+
+    reminder:
+      "A stylised 3D environment exploring composition, lighting, assets and sound."
+
+  },
 
 
-    photo: {
+  /* =====================================================
+     PHOTOGRAPHY
+  ===================================================== */
 
-        kicker: "04 / PHOTOGRAPHY",
+  photo: {
 
-        title: "In the frame",
+    kicker: "04 / PHOTOGRAPHY",
 
-        description:
-            "A curated photography project focused on composition, atmosphere, detail and visual storytelling.",
+    title: "In the frame",
 
-        role:
-            "ROLE: PHOTOGRAPHY / EDITING",
+    description:
+      "A curated photography selection focused on observation, light and composition.",
 
-        tools:
-            "TOOLS: CAMERA / LIGHTROOM"
+    role:
+      "ROLE: PHOTOGRAPHY / EDITING",
 
-    }
+    tools:
+      "TOOLS: CAMERA / LIGHTROOM",
+
+    gallery: [],
+
+    reminder:
+      "A selection of original photography focused on observation, light and composition."
+
+  }
 
 };
 
@@ -302,358 +224,540 @@ const projectContent = {
 
 /* =========================================================
    PROJECT DIALOG
-   ========================================================= */
+========================================================= */
 
-const projectDialog =
-    document.querySelector("#project-dialog");
-
+const dialog = document.querySelector("#project-dialog");
 
 const dialogKicker =
-    document.querySelector("#dialog-kicker");
-
+  document.querySelector("#dialog-kicker");
 
 const dialogTitle =
-    document.querySelector("#dialog-title");
-
+  document.querySelector("#dialog-title");
 
 const dialogDescription =
-    document.querySelector("#dialog-description");
-
+  document.querySelector("#dialog-description");
 
 const dialogRole =
-    document.querySelector("#dialog-role");
-
+  document.querySelector("#dialog-role");
 
 const dialogTools =
-    document.querySelector("#dialog-tools");
+  document.querySelector("#dialog-tools");
 
+const dialogGallery =
+  document.querySelector("#dialog-gallery");
 
-const dialogClose =
-    document.querySelector(".dialog-close");
+const dialogReminder =
+  document.querySelector("#dialog-reminder");
 
 
 
 /* =========================================================
-   PROJECT CLICK HANDLING
-   ========================================================= */
+   OPEN PROJECT
+========================================================= */
 
 document
-    .querySelectorAll("[data-project]")
-    .forEach(project => {
+  .querySelectorAll("[data-project]")
+  .forEach(project => {
 
-        project.addEventListener("click", event => {
+    project.addEventListener("click", event => {
 
-            const projectName =
-                project.dataset.project;
+      event.preventDefault();
 
+      const item =
+        projectContent[project.dataset.project];
 
-            /*
-             * Mechanical Keyboard
-             *
-             * Šis projektas turi būti atskira nuoroda,
-             * todėl jo dialogas neatidaromas.
-             */
-
-            if (projectName === "keyboard") {
-
-                return;
-
-            }
+      if (!item || !dialog) {
+        return;
+      }
 
 
-            const content =
-                projectContent[projectName];
+      /* BASIC INFO */
+
+      dialogKicker.textContent =
+        item.kicker;
+
+      dialogTitle.textContent =
+        item.title;
+
+      dialogDescription.textContent =
+        item.description;
+
+      dialogRole.textContent =
+        item.role;
+
+      dialogTools.textContent =
+        item.tools;
+
+      dialogReminder.textContent =
+        item.reminder;
 
 
-            if (!content || !projectDialog) {
+      /* =================================================
+         CLEAR OLD GALLERY
+      ================================================= */
 
-                return;
-
-            }
-
-
-            event.preventDefault();
+      dialogGallery.innerHTML = "";
 
 
-            if (dialogKicker) {
+      /* =================================================
+         CREATE GALLERY
+      ================================================= */
 
-                dialogKicker.textContent =
-                    content.kicker;
+      if (item.gallery && item.gallery.length) {
 
-            }
+        const galleryTitle =
+          document.createElement("p");
 
+        galleryTitle.className =
+          "dialog-gallery-label mono";
 
-            if (dialogTitle) {
+        galleryTitle.textContent =
+          "SELECTED VISUALS";
 
-                dialogTitle.textContent =
-                    content.title;
-
-            }
-
-
-            if (dialogDescription) {
-
-                dialogDescription.textContent =
-                    content.description;
-
-            }
+        dialogGallery.appendChild(
+          galleryTitle
+        );
 
 
-            if (dialogRole) {
+        item.gallery.forEach(image => {
 
-                dialogRole.textContent =
-                    content.role;
+          const imageWrapper =
+            document.createElement("div");
 
-            }
-
-
-            if (dialogTools) {
-
-                dialogTools.textContent =
-                    content.tools;
-
-            }
+          imageWrapper.className =
+            "dialog-gallery-item";
 
 
-            projectDialog.showModal();
+          const img =
+            document.createElement("img");
+
+          img.src = image.src;
+
+          img.alt = image.alt;
+
+          img.loading = "lazy";
+
+
+          imageWrapper.appendChild(img);
+
+          dialogGallery.appendChild(
+            imageWrapper
+          );
 
         });
 
+      }
+
+
+      /* =================================================
+         WEBSITE IMAGE / LINK
+      ================================================= */
+
+      if (item.website) {
+
+        const websiteBlock =
+          document.createElement("div");
+
+        websiteBlock.className =
+          "dialog-website";
+
+
+        const websiteLabel =
+          document.createElement("p");
+
+        websiteLabel.className =
+          "dialog-gallery-label mono";
+
+        websiteLabel.textContent =
+          item.website.title;
+
+
+        const websiteLink =
+          document.createElement("a");
+
+        websiteLink.href =
+          item.website.url;
+
+        websiteLink.target =
+          "_blank";
+
+        websiteLink.rel =
+          "noopener noreferrer";
+
+        websiteLink.className =
+          "dialog-website-link";
+
+
+        const websiteImage =
+          document.createElement("img");
+
+        websiteImage.src =
+          item.website.image;
+
+        websiteImage.alt =
+          "VLTN website preview";
+
+
+        const websiteOverlay =
+          document.createElement("span");
+
+        websiteOverlay.className =
+          "dialog-website-overlay";
+
+        websiteOverlay.innerHTML =
+          "OPEN WEBSITE ↗";
+
+
+        websiteLink.appendChild(
+          websiteImage
+        );
+
+        websiteLink.appendChild(
+          websiteOverlay
+        );
+
+
+        websiteBlock.appendChild(
+          websiteLabel
+        );
+
+        websiteBlock.appendChild(
+          websiteLink
+        );
+
+        dialogGallery.appendChild(
+          websiteBlock
+        );
+
+      }
+
+
+      /* =================================================
+         OPEN
+      ================================================= */
+
+      dialog.showModal();
+
     });
+
+  });
 
 
 
 /* =========================================================
    CLOSE PROJECT DIALOG
-   ========================================================= */
+========================================================= */
 
-if (dialogClose && projectDialog) {
+const closeProjectDialog =
+  document.querySelector(
+    "#close-project-dialog"
+  );
 
-    dialogClose.addEventListener(
-        "click",
-        () => {
-            projectDialog.close();
-        }
-    );
+closeProjectDialog?.addEventListener(
+  "click",
+  () => {
 
-}
+    dialog?.close();
 
-
-if (projectDialog) {
-
-    projectDialog.addEventListener(
-        "click",
-        event => {
-
-            // Paspaudus už dialogo ribų
-            if (event.target === projectDialog) {
-
-                projectDialog.close();
-
-            }
-
-        }
-    );
+  }
+);
 
 
-    // ESC taip pat uždaro dialogą
-    projectDialog.addEventListener(
-        "cancel",
-        () => {
 
-            projectDialog.close();
+/* Close when clicking backdrop */
 
-        }
-    );
+dialog?.addEventListener(
+  "click",
+  event => {
 
-}
+    if (event.target === dialog) {
+
+      dialog.close();
+
+    }
+
+  }
+);
 
 
 
 /* =========================================================
-   CONTACT FORM
-   ========================================================= */
+   CONTACT FORM DIALOG
+========================================================= */
+
+const contactDialog =
+  document.querySelector(
+    "#contact-form-dialog"
+  );
+
+const openContactForm =
+  document.querySelector(
+    "#open-contact-form"
+  );
+
+const closeContactForm =
+  document.querySelector(
+    "#close-contact-form"
+  );
+
+
+openContactForm?.addEventListener(
+  "click",
+  event => {
+
+    event.preventDefault();
+
+    contactDialog?.showModal();
+
+  }
+);
+
+
+closeContactForm?.addEventListener(
+  "click",
+  () => {
+
+    contactDialog?.close();
+
+  }
+);
+
+
+contactDialog?.addEventListener(
+  "click",
+  event => {
+
+    if (event.target === contactDialog) {
+
+      contactDialog.close();
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   CONTACT FORM SUBMISSION
+========================================================= */
 
 const contactForm =
-    document.querySelector("#contact-form");
+  document.querySelector(
+    "#contact-form"
+  );
+
+const contactStatus =
+  document.querySelector(
+    "#contact-form-status"
+  );
 
 
-if (contactForm) {
+contactForm?.addEventListener(
+  "submit",
+  async event => {
 
-    contactForm.addEventListener(
-        "submit",
-        async event => {
-
-            event.preventDefault();
+    event.preventDefault();
 
 
-            const submitButton =
-                contactForm.querySelector(
-                    'button[type="submit"]'
-                );
+    const submitButton =
+      contactForm.querySelector(
+        ".contact-form-submit"
+      );
 
 
-            const originalButtonText =
-                submitButton
-                    ? submitButton.textContent
-                    : "";
+    if (submitButton) {
+
+      submitButton.disabled = true;
+
+      submitButton.innerHTML =
+        "Sending... <span>↗</span>";
+
+    }
 
 
-            if (submitButton) {
+    contactStatus.textContent = "";
 
-                submitButton.disabled = true;
-
-                submitButton.textContent =
-                    "SENDING...";
-
-            }
-
-
-            try {
-
-                const formData =
-                    new FormData(contactForm);
-
-
-                const response =
-                    await fetch(
-                        contactForm.action,
-                        {
-                            method: "POST",
-                            body: formData,
-                            headers: {
-                                "Accept":
-                                    "application/json"
-                            }
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Form submission failed."
-                    );
-
-                }
-
-
-                contactForm.reset();
-
-
-                if (submitButton) {
-
-                    submitButton.textContent =
-                        "SENT";
-
-                }
-
-
-                setTimeout(() => {
-
-                    if (submitButton) {
-
-                        submitButton.textContent =
-                            originalButtonText;
-
-                        submitButton.disabled =
-                            false;
-
-                    }
-
-                }, 2500);
-
-
-            } catch (error) {
-
-                console.error(
-                    "Contact form error:",
-                    error
-                );
-
-
-                if (submitButton) {
-
-                    submitButton.textContent =
-                        "ERROR";
-
-                }
-
-
-                setTimeout(() => {
-
-                    if (submitButton) {
-
-                        submitButton.textContent =
-                            originalButtonText;
-
-                        submitButton.disabled =
-                            false;
-
-                    }
-
-                }, 2500);
-
-            }
-
-        }
+    contactStatus.classList.remove(
+      "is-error"
     );
+
+
+    try {
+
+      const response =
+        await fetch(
+          contactForm.action,
+          {
+            method: "POST",
+            body: new FormData(contactForm),
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Message could not be sent."
+        );
+
+      }
+
+
+      contactStatus.textContent =
+        "Message sent successfully.";
+
+      contactForm.reset();
+
+
+      if (submitButton) {
+
+        submitButton.innerHTML =
+          "Message sent <span>✓</span>";
+
+      }
+
+
+    } catch (error) {
+
+      contactStatus.textContent =
+        "Something went wrong. Please email me directly.";
+
+      contactStatus.classList.add(
+        "is-error"
+      );
+
+
+      if (submitButton) {
+
+        submitButton.disabled = false;
+
+        submitButton.innerHTML =
+          "Send message <span>↗</span>";
+
+      }
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   BRANDED LOADER
+========================================================= */
+
+const loader =
+  document.querySelector("#site-loader");
+
+const loaderPercent =
+  document.querySelector("#loader-percent");
+
+const loaderProgress =
+  document.querySelector("#loader-progress");
+
+
+let loaderValue = 0;
+
+
+function updateLoader(value) {
+
+  loaderValue =
+    Math.min(100, Math.round(value));
+
+
+  if (loaderPercent) {
+
+    loaderPercent.textContent =
+      `${String(loaderValue).padStart(2, "0")}%`;
+
+  }
+
+
+  if (loaderProgress) {
+
+    loaderProgress.style.width =
+      `${loaderValue}%`;
+
+  }
 
 }
 
 
+function hideLoader() {
 
-/* =========================================================
-   SMOOTH ANCHOR SCROLL
-   ========================================================= */
-
-document
-    .querySelectorAll('a[href^="#"]')
-    .forEach(link => {
-
-        link.addEventListener("click", event => {
-
-            const targetId =
-                link.getAttribute("href");
+  if (!loader) {
+    return;
+  }
 
 
-            if (
-                !targetId ||
-                targetId === "#"
-            ) {
-
-                return;
-
-            }
+  updateLoader(100);
 
 
-            const target =
-                document.querySelector(
-                    targetId
-                );
+  setTimeout(() => {
+
+    loader.classList.add(
+      "is-hidden"
+    );
+
+  }, 350);
+
+}
 
 
-            if (!target) {
+function runLoader() {
 
-                return;
+  let value = 0;
 
-            }
+  const interval =
+    setInterval(() => {
+
+      value +=
+        Math.random() * 12 + 4;
+
+      if (value >= 92) {
+
+        value = 92;
+
+        clearInterval(interval);
+
+      }
+
+      updateLoader(value);
+
+    }, 100);
 
 
-            event.preventDefault();
+  window.addEventListener(
+    "load",
+    () => {
+
+      updateLoader(100);
+
+      setTimeout(
+        hideLoader,
+        450
+      );
+
+    },
+    {
+      once: true
+    }
+  );
 
 
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+  /* Safety fallback */
 
-        });
+  setTimeout(
+    hideLoader,
+    2500
+  );
 
-    });
+}
 
 
-
-/* =========================================================
-   END
-   ========================================================= */
+runLoader();
