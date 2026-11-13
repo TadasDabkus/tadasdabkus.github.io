@@ -623,3 +623,8 @@ button { font: inherit; }
   .dialog-gallery { gap: 9px; margin-top: 20px; }
   .dialog-gallery img { max-height: none; }
 }
+
+.project-dialog {
+    width: min(900px, 90vw);
+    max-width: 900px;
+}
