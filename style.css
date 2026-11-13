@@ -139,7 +139,7 @@ button { font: inherit; }
 .site-footer .logo { color: var(--text); }
 .site-footer .mono, .back-top { font: 9px var(--mono); letter-spacing: .06em; }
 .back-top { color: var(--text); }
-.project-dialog { color: var(--text); background: #1a1a1a; border: 1px solid var(--line); width: min(560px, calc(100% - 32px)); padding: 42px; }
+.project-dialog { color: var(--text); background: #1a1a1a; border: 1px solid var(--line); width: min(1100px, calc(100% - 32px)); padding: 42px; }
 .project-dialog::backdrop { background: #000b; backdrop-filter: blur(5px); }
 .dialog-close { position: absolute; right: 16px; top: 10px; background: none; border: 0; color: var(--text); font-size: 30px; cursor: pointer; }
 .project-dialog h2 { font: 700 clamp(32px, 5vw, 54px)/.95 var(--display); letter-spacing: -.06em; margin: 0 0 20px; }
@@ -580,8 +580,8 @@ button { font: inherit; }
   display: block;
   width: 100%;
   height: auto;
-  max-height: 620px;
-  object-fit: cover;
+  max-height: none;
+  object-fit: contain;
 }
 .dialog-gallery figcaption {
   padding: 9px 11px;
@@ -624,12 +624,3 @@ button { font: inherit; }
   .dialog-gallery img { max-height: none; }
 }
 
-.project-dialog {
-    width: min(1650px, 95vw);
-    max-width: 1650px;
-}
-
-.project-dialog {
-    width: 95vw !important;
-    max-width: 95vw !important;
-}
