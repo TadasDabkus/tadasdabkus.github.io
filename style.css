@@ -628,3 +628,8 @@ button { font: inherit; }
     width: min(1650px, 95vw);
     max-width: 1650px;
 }
+
+.project-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+}
