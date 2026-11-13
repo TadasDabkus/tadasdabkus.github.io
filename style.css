@@ -577,11 +577,13 @@ button { font: inherit; }
   overflow: hidden;
 }
 .dialog-gallery img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: none;
-  object-fit: contain;
+    display: block;
+    width: 100%;
+    height: auto !important;
+    max-width: 100%;
+    max-height: none !important;
+    object-fit: initial !important;
+    aspect-ratio: auto !important;
 }
 .dialog-gallery figcaption {
   padding: 9px 11px;
@@ -622,5 +624,9 @@ button { font: inherit; }
   .art-vltn img { object-position: center 58%; }
   .dialog-gallery { gap: 9px; margin-top: 20px; }
   .dialog-gallery img { max-height: none; }
+}
+.project-dialog {
+    width: min(1100px, calc(100% - 32px));
+    max-width: 1100px;
 }
 
