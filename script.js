@@ -272,28 +272,34 @@
 
 
     /* =================================
-       04 / PHOTOGRAPHY
+       04 / ORBIT
     ================================= */
 
-    photo: {
+    orbit: {
 
       kicker:
-        "04 / PHOTOGRAPHY",
+        "04 / CREATIVE TECHNOLOGY",
 
       title:
-        "In the frame",
+        "ORBIT",
 
       description:
-        "A selection of photographic work focused on observation, light, framing and visual storytelling.",
+        "An interactive product configurator concept built around AERIS, a futuristic wireless spatial headphone system. The experience combines a custom 3D model with real-time material, colour, finish and lighting controls.",
 
       role:
-        "ROLE: PHOTOGRAPHY / EDITING",
+        "ROLE: 3D / FRONT-END / INTERACTION",
 
       tools:
-        "TOOLS: CAMERA / LIGHTROOM / PHOTOSHOP",
+        "TOOLS: BLENDER / THREE.JS / JAVASCRIPT / CSS",
 
       reminder:
-        "Selected visual stories and photographic experiments.",
+        "ORBIT explores how a physical product can become an interactive digital experience through 3D presentation, configuration logic and responsive interface design.",
+
+      link:
+        "https://tadasdabkus.github.io/orbit/",
+
+      linkLabel:
+        "Open ORBIT configurator",
 
       gallery: []
 
